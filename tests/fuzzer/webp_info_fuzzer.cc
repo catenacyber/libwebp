@@ -26,12 +26,8 @@
 #include "examples/webpinfo.c"
 #undef main
 
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
-  nalloc_init((*argv)[0]);
-  return 0;
-}
-
 void WebPInfoTest(std::string_view data) {
+  nalloc_init(nullptr);
   nalloc_start(reinterpret_cast<const uint8_t *>(data.data()), data.size());
   WebPInfo webp_info;
   WebPInfoInit(&webp_info);

@@ -23,11 +23,6 @@
 #include "src/webp/decode.h"
 #include "tests/fuzzer/fuzz_utils.h"
 
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
-  nalloc_init((*argv)[0]);
-  return 0;
-}
-
 namespace {
 
 void DecodeWebP(std::string_view arbitrary_bytes) {
@@ -36,6 +31,7 @@ void DecodeWebP(std::string_view arbitrary_bytes) {
     fprintf(stderr, "WebPInitDecoderConfig failed.\n");
     std::abort();
   }
+  nalloc_init(nullptr);
   nalloc_start(reinterpret_cast<const uint8_t *>(arbitrary_bytes.data()),
                arbitrary_bytes.size());
   const VP8StatusCode status =

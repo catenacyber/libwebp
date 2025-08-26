@@ -25,16 +25,12 @@
 #include "src/webp/demux.h"
 #include "src/webp/mux_types.h"
 
-extern "C" int LLVMFuzzerInitialize(int* argc, char*** argv) {
-  nalloc_init((*argv)[0]);
-  return 0;
-}
-
 namespace {
 
 void AnimDecoderTest(std::string_view blob) {
   const uint8_t* const data = reinterpret_cast<const uint8_t*>(blob.data());
   const size_t size = blob.size();
+  nalloc_init(nullptr);
   nalloc_start(data, size);
 
   // WebPAnimDecoderGetInfo() is too late to check the canvas size as

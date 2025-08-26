@@ -28,11 +28,6 @@
 #include "src/webp/encode.h"
 #include "tests/fuzzer/fuzz_utils.h"
 
-extern "C" int LLVMFuzzerInitialize(int *argc, char ***argv) {
-  nalloc_init((*argv)[0]);
-  return 0;
-}
-
 namespace {
 
 void TestReader(const uint8_t *data, size_t size, WebPImageReader reader,
@@ -42,6 +37,7 @@ void TestReader(const uint8_t *data, size_t size, WebPImageReader reader,
     std::cerr << "WebPPictureInit failed" << std::endl;
     std::abort();
   }
+  nalloc_init(nullptr);
   nalloc_start(data, size);
   Metadata metadata;
   MetadataInit(&metadata);
